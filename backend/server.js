@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import connectMongoDB from "./db/connectMongoDB.js"
 
 const app = express();
+app.use(express.json())
+// to parse from data(urlencoded)
+app.use(express.urlencoded({extended:true}))
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
