@@ -12,6 +12,10 @@ CLOUDINARY_CLOUD_NAME=...
 CLOUDINARY_API_KEY=...
 CLOUDINARY_API_SECRET=...
 ```
+## Install Dependencies
+```
+npm i
+```
 ## Build the app
 ```
 GRANT_TYPE=client_credentials
