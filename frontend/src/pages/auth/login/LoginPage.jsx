@@ -5,7 +5,7 @@ import RYISvg from "../../../components/svg/RYI";
 
 import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
@@ -13,6 +13,8 @@ const LoginPage = () => {
     username: "",
     password: "",
   });
+
+  const queryClient = useQueryClient();
 
   const {
     mutate: loginMutation,
@@ -42,6 +44,8 @@ const LoginPage = () => {
       }
     },
     onSuccess: () => {
+      //refetch the authUser
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
       toast.success("Login successful!");
     },
   });
