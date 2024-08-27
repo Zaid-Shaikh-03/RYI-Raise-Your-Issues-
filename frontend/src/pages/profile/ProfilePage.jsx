@@ -14,18 +14,23 @@ import { MdEdit } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import { formatMemberSinceDate } from "../../utils/date";
 
+// import { useFollow } from "../../hooks/useFollow";
+
 const ProfilePage = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
   const [feedType, setFeedType] = useState("posts");
-
+  // const {follow, isPending} =useFollow();
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
   
   const{username} = useParams();
 
+  
+  const {data:authUser} = useQuery({
+    queryKey: ['authUser'],
+  })
 
-  const isMyProfile = true;
 
   const {data:user,isLoading,refetch,isRefetching} = useQuery({
     querykey: ['userProfile'],
@@ -40,7 +45,9 @@ const ProfilePage = () => {
       }
     },
   })
+  const isMyProfile = authUser._id === user?._id;
   const memberSinceDate = formatMemberSinceDate(user?.createdAt)
+  // const amIFollowing = user?.followers.includes(authUser._id);
   const handleImgChange = (e, state) => {
     const file = e.target.files[0];
     if (file) {
@@ -135,8 +142,11 @@ const ProfilePage = () => {
                 {!isMyProfile && (
                   <button
                     className="rounded-full btn btn-outline btn-sm"
-                    onClick={() => alert("Followed successfully")}
+                    onClick={() => /*follow(user?._id)*/alert("Follow successful")}
                   >
+                    {/* {isPending && "Loading...."}
+                    {!isPending && amIFollowing && "UnFollow"}
+                    {!isPending && !amIFollowing && "UnFollow"} */}
                     Follow
                   </button>
                 )}
