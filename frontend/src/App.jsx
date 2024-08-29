@@ -41,7 +41,7 @@ function App(props) {
     );
   }
   return (
-    <div className="flex max-w-6xl mx-auto">
+    <div className="flex max-w-6xl mx-auto md:mx-0  ">
       {authUser && <Sidebar />}
       <Routes>
         <Route
