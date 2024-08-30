@@ -61,7 +61,7 @@ const Sidebar = () => {
             <Link
               acti
               to="/"
-              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-lg duration-300 py-2 pl-2 pr-4  cursor-pointer  w-full mr-3 relative overflow-hidden"
+              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-lg duration-300 py-2 pl-4 pr-4 md:mr-3  cursor-pointer  w-full mr-2 relative overflow-hidden"
             >
               <MdHomeFilled className="w-8 h-8" />
               <span className="text-lg hidden md:block">Home</span>
@@ -75,7 +75,7 @@ const Sidebar = () => {
           <li className="flex justify-center md:justify-start">
             <Link
               to="/notifications"
-              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-lg duration-300 py-2 pl-2 pr-4  cursor-pointer  w-full mr-3 relative overflow-hidden"
+              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-lg duration-300 py-2 pl-4 pr-4  cursor-pointer  w-full mr-2 md:mr-3  relative overflow-hidden"
             >
               <IoNotifications className="w-6 h-6" />
               <span className="text-lg hidden md:block">Notifications</span>
@@ -90,7 +90,7 @@ const Sidebar = () => {
           <li className="flex justify-center md:justify-start">
             <Link
               to={`/profile/${authUser?.username}`}
-              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-lg duration-300 py-2 pl-2 pr-4 mr-3 cursor-pointer  w-[100%] relative overflow-hidden"
+              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-lg duration-300 py-2 pl-4 pr-4 mr-2 md:mr-3  cursor-pointer  w-[100%] relative overflow-hidden"
             >
               <FaUser className="w-6 h-6" />
               <span className="text-lg hidden md:block">Profile</span>

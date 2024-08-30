@@ -73,7 +73,7 @@ const CreatePost = () => {
       <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
         <textarea
           className="textarea w-full p-0 text-lg resize-none border-none focus:outline-none  border-gray-800"
-          placeholder="What is happening?!"
+          placeholder="Share somthing!"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
@@ -101,6 +101,7 @@ const CreatePost = () => {
             />
             <BsEmojiSmileFill className="fill-primary w-5 h-5 cursor-pointer" />
           </div>
+
           <input
             type="file"
             accept="image/*"
@@ -108,8 +109,8 @@ const CreatePost = () => {
             ref={imgRef}
             onChange={handleImgChange}
           />
-          <button className="btn btn-primary rounded-full btn-sm text-white px-4">
-            {isPending ? "Posting..." : "Post"}
+          <button className="btn btn-primary rounded-lg btn-sm text-white px-4">
+            {isPending ? "Sending..." : "Send"}
           </button>
         </div>
         {isError && <div className="text-red-500">{error.message}</div>}
