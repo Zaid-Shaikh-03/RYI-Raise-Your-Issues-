@@ -66,8 +66,8 @@ const Sidebar = () => {
               <MdHomeFilled className="w-8 h-8" />
               <span className="text-lg hidden md:block">Home</span>
               <div
-                className={`bg-white w-1 h-full  absolute right-0 ${
-                  pathname.split("/")[1] === "" ? "bg-white" : "bg-black"
+                className={`w-1 h-full  absolute right-0 ${
+                  pathname === "/" ? "bg-white" : "bg-black"
                 }`}
               ></div>
             </Link>
@@ -80,10 +80,8 @@ const Sidebar = () => {
               <IoNotifications className="w-6 h-6" />
               <span className="text-lg hidden md:block">Notifications</span>
               <div
-                className={`bg-white w-1 h-full  absolute right-0 ${
-                  pathname.split("/")[1] === "notifications"
-                    ? "bg-white"
-                    : "bg-black"
+                className={`w-1 h-full  absolute right-0 ${
+                  pathname === "/notifications" ? "bg-white" : "bg-black"
                 }`}
               ></div>
             </Link>
@@ -97,7 +95,7 @@ const Sidebar = () => {
               <FaUser className="w-6 h-6" />
               <span className="text-lg hidden md:block">Profile</span>
               <div
-                className={`bg-white w-1 h-full  absolute right-0 ${
+                className={`w-1 h-full  absolute right-0 ${
                   pathname.split("/")[1] === "profile" ? "bg-white" : "bg-black"
                 }`}
               ></div>
