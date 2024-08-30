@@ -5,15 +5,48 @@ import useFollow from "../../hooks/useFollow";
 
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
+import { useEffect, useState } from "react";
 
 const RightPanel = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [top5Users, setTop5Users] = useState([]);
+
+  const { data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      try {
+        const res = await fetch("/api/users/all");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
+        return data;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+  });
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  useEffect(() => {
+    if (!users) return;
+
+    const filteredUsers = users
+      .filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .slice(0, 5);
+    setTop5Users(filteredUsers);
+  }, [searchQuery, users]);
+
   const { data: suggestedUsers, isLoading } = useQuery({
     queryKey: ["suggestedUsers"],
     queryFn: async () => {
       try {
         const res = await fetch("/api/users/suggested");
         const data = await res.json();
-        if (!res.ok) throw new Errror(data.error || "Something went wrong");
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
         return data;
       } catch (error) {
         throw new Error(error.message);
@@ -27,9 +60,19 @@ const RightPanel = () => {
 
   return (
     <div className="hidden lg:block my-4 mx-2">
-      <div className="p-4 rounded-lg sticky top-2 mb-3">
-        <label className="input input-bordered flex items-center gap-2 rounded-lg">
-          <input type="text" className="grow " placeholder="Search" />
+      <div className="dropdown p-4 rounded-lg sticky top-2 mb-3 z-30">
+        <label
+          tabIndex={0}
+          role="button"
+          className="input input-bordered flex items-center gap-2 rounded-lg relative"
+        >
+          <input
+            type="text"
+            className="grow "
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleInputChange}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -42,9 +85,39 @@ const RightPanel = () => {
               clipRule="evenodd"
             />
           </svg>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-zinc-800 rounded-lg z-[1] w-60 p-0 shadow top-14 left-0"
+          >
+            {top5Users &&
+              top5Users.map((user) => (
+                <li>
+                  <Link
+                    to={`/profile/${user.username}`}
+                    className="mt-auto mb-3 flex gap-2 items-start transition-all duration-300 hover:bg-[#181818] py-2 px-4 rounded-lg"
+                  >
+                    <div className="avatar hidden md:inline-flex">
+                      <div className="w-8 rounded-full">
+                        <img
+                          src={user?.profileImg || "/avatar-placeholder.png"}
+                        />
+                      </div>
+                    </div>
+                    <div className="hidden md:block">
+                      <p className="text-white font-bold text-sm w-36 truncate">
+                        {user?.fullName}
+                      </p>
+                      <p className="text-slate-500 text-sm">
+                        @{user?.username}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+          </ul>
         </label>
       </div>
-      <div className="bg-[#16181C] p-4 rounded-md sticky top-24">
+      <div className="bg-[#16181C] p-4 rounded-md sticky top-24 ">
         <p className="font-bold">Who to follow</p>
         <div className="flex flex-col gap-4">
           {/* item */}
