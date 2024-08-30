@@ -17,10 +17,17 @@ const SignUpPage = () => {
     username: "",
     fullName: "",
     password: "",
+    organization: false,
   });
 
   const { mutate, isError, isPending, error } = useMutation({
-    mutationFn: async ({ email, username, fullName, password }) => {
+    mutationFn: async ({
+      email,
+      username,
+      fullName,
+      password,
+      organization,
+    }) => {
       try {
         const res = await fetch("/api/auth/signup", {
           method: "POST",
@@ -32,6 +39,7 @@ const SignUpPage = () => {
             username: username,
             fullName: fullName,
             password: password,
+            organization: organization,
           }),
         });
         const data = await res.json();
@@ -55,7 +63,11 @@ const SignUpPage = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, type, value, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   return (
@@ -122,6 +134,19 @@ const SignUpPage = () => {
               value={formData.password}
             />
           </label>
+          <div className="form-control">
+            <label className="label cursor-pointer">
+              <span className="label-text">Are Some Type Of Organization?</span>
+              <input
+                type="checkbox"
+                defaultUnchecked
+                className="checkbox rounded-md"
+                name="organization"
+                onChange={handleInputChange}
+                checked={formData.organization}
+              />
+            </label>
+          </div>
           <button className="btn rounded-lg btn-primary text-white">
             {isPending ? "Loading..." : "Sign up"}
           </button>

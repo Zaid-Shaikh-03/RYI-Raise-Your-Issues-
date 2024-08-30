@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
         required:true,
         unique:true,
     },
+    organization:{
+        type:Boolean,
+        default:false,
+    },
     followers:[
         {
             type:mongoose.Schema.Types.ObjectId,
