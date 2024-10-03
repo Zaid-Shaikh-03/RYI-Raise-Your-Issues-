@@ -5,28 +5,33 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-const CreatePost = () => {
+const CreatePost = ({ organization: orgId, type }) => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
+  const [organization, setOrganization] = useState(orgId);
   const imgRef = useRef(null);
 
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   const queryClient = useQueryClient();
-
   const {
     mutate: createPost,
     isPending,
     isError,
     error,
   } = useMutation({
-    mutationFn: async ({ text, img }) => {
+    mutationFn: async ({ text, img, organization, type }) => {
       try {
         const res = await fetch("/api/posts/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ text, img }),
+          body: JSON.stringify({
+            text,
+            img,
+            organization,
+            type,
+          }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Something went wrong");
@@ -38,7 +43,9 @@ const CreatePost = () => {
     onSuccess: () => {
       setText("");
       setImg(null);
-      toast.success("Post craeted successfuly");
+      toast.success(
+        `${type === "post" ? "Post created " : "Issue raised "}successfuly`
+      );
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
@@ -49,7 +56,7 @@ const CreatePost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createPost({ text, img });
+    createPost({ text, img, organization, type });
   };
 
   const handleImgChange = (e) => {
@@ -110,7 +117,13 @@ const CreatePost = () => {
             onChange={handleImgChange}
           />
           <button className="btn btn-primary rounded-lg btn-sm text-white px-4">
-            {isPending ? "Sending..." : "Send"}
+            {type === "post"
+              ? isPending
+                ? "Sending..."
+                : "Send"
+              : isPending
+              ? "Raising..."
+              : "Raise"}
           </button>
         </div>
         {isError && <div className="text-red-500">{error.message}</div>}

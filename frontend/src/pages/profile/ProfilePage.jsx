@@ -17,11 +17,13 @@ import { formatMemberSinceDate } from "../../utils/date";
 import useFollow from "../../hooks/useFollow";
 import toast from "react-hot-toast";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
+import CreatePost from "../home/CreatePost";
 
 const ProfilePage = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
   const [feedType, setFeedType] = useState("posts");
+  const [orgName, setOrgName] = useState(null);
 
   const { follow, isPending } = useFollow();
 
@@ -72,8 +74,15 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
+    if (user) setOrgName(user.username);
     refetch();
   }, [username, refetch]);
+
+  useEffect(() => {
+    if (user) {
+      setOrgName(user.username);
+    }
+  }, [user]);
 
   return (
     <>
@@ -242,11 +251,29 @@ const ProfilePage = () => {
                     <div className="absolute bottom-0 w-10 h-1 rounded-full bg-primary" />
                   )}
                 </div>
+                <div
+                  className={`relative flex justify-center flex-1 p-3 transition duration-300 cursor-pointer text-slate-500 hover:bg-secondary ${
+                    user.organization ? "" : "hidden"
+                  }`}
+                  onClick={() => setFeedType("issues")}
+                >
+                  Issues
+                  {feedType === "issues" && (
+                    <div className="absolute bottom-0 w-10 h-1 rounded-full bg-primary" />
+                  )}
+                </div>
+              </div>
+              <div className={`${feedType === "issues" ? "" : "hidden"}`}>
+                <CreatePost organization={user._id} type="issue" />
               </div>
             </>
           )}
-
-          <Posts feedType={feedType} username={username} userId={user?._id} />
+          <Posts
+            feedType={feedType}
+            organization={orgName}
+            username={username}
+            userId={user?._id}
+          />
         </div>
       </div>
     </>
