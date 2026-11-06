@@ -42,7 +42,7 @@ jobs:
           context: .
           file: Docker/prod/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/conexa:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/RYI:latest
 
       # 6. Trigger Render deployment
       - name: Trigger Render Deploy
