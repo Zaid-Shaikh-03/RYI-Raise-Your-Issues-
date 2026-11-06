@@ -42,7 +42,7 @@ jobs:
           context: .
           file: Docker/prod/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/RYI:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/raise_your_issue:latest
 
       # 6. Trigger Render deployment
       - name: Trigger Render Deploy
